@@ -6,6 +6,9 @@ class Cart():
             cart = self.session['cart'] = {}
         self.cart = cart
 
+    def __len__(self):
+        return sum (int(item['quantity']) for item in self.cart.values())
+
     def add_to_cart(self, product, product_quantity):
         product_id = product.id
         if product_id in self.cart:
