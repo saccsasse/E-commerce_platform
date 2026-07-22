@@ -63,5 +63,8 @@ def user_login(request):
             if user is not None:
                 login(request,user)
                 return redirect('index')
-
     return render(request, 'users/login.html', {'form': form})
+
+def user_logout(request):
+    logout(request)
+    return redirect('index')
