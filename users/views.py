@@ -4,8 +4,9 @@ from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth import authenticate, login, logout
 
-from .forms import CreateUserForm
+from .forms import CreateUserForm, LoginForm
 from .token import account_activation_token
 
 
@@ -41,7 +42,6 @@ def email_verification(request, uidb64, token):
     else:
         return redirect('email-verification-failed')
 
-
 def email_verification_sent(request):
     return render(request, 'users/email-verification-sent.html')
 
@@ -50,3 +50,18 @@ def email_verification_success(request):
 
 def email_verification_failed(request):
     return render(request, 'users/email-verification-failed.html')
+
+
+def user_login(request):
+    form = LoginForm()
+    if request.method == 'POST':
+        form = LoginForm(request,data = request.POST)
+        if form.is_valid():
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request,user)
+                return redirect('index')
+
+    return render(request, 'users/login.html', {'form': form})
