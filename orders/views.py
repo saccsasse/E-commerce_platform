@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.shortcuts import render, redirect
 from .forms import AddressForm
 from .models import Address, Order, OrderItem
@@ -38,7 +39,8 @@ def place_order(request):
         cart = Cart(request)
         total_amount = cart.get_total_price()
         if request.user.is_authenticated:
-            order = Order.objects.create(user=request.user, total_amount=total_amount)
+            with transaction.atomic():
+                order = Order.objects.create(user=request.user, total_amount=total_amount)
             for item in cart:
                 OrderItem.objects.create(
                     order=order,
@@ -47,7 +49,8 @@ def place_order(request):
                 )
             order_success = True
         else:
-            order = Order.objects.create(total_amount=total_amount)
+            with transaction.atomic():
+                order = Order.objects.create(total_amount=total_amount)
             for item in cart:
                 OrderItem.objects.create(
                     order=order,
