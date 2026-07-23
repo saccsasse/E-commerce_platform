@@ -38,20 +38,22 @@
           <!-- <td class="p-2">{{ item.qty }}</td> -->
           <td class="p-4">
             <select id="select{{product.id}}">
-              <option selected>{{item.quantity}}</option>
+              <option selected value="{{ item.quantity }}">
+                  {{item.quantity}}
+              </option>
 
-              <option value="">1</option>
+              <option value="1">1</option>
 
-              <option value="">2</option>
+              <option value="2">2</option>
 
-              <option value="">3</option>
+              <option value="3">3</option>
 
-              <option value="">4</option>
+              <option value="4">4</option>
             </select>
           </td>
 
-          <td class="p-4 text-gray-700">₹{{ item.price }}</td>
-          <td class="p-4 text-gray-700">₹{{ item.total }}</td>
+          <td class="p-4 text-gray-700">${{ item.price }}</td>
+          <td class="p-4 text-gray-700">${{ item.total }}</td>
 
           <td class="p-4 space-x-2">
             <button
@@ -86,7 +88,7 @@
 <!--Cart Total-->
 <div class="mt-6 text-right pr-2">
   <strong class="text-lg text-gray-900" id="total-price">
-    >Total: ₹{{ cart.get_total_price}}</strong
+    Total: ${{ cart.get_total_price}}</strong
   >
 </div>
 {% else %}
@@ -124,13 +126,14 @@
             url: "{% url 'cart_update' %}",
             data: {
                 product_id: $(this).data('index'),
-                product_quality: $("#select" + productID + "option:selected").text(),
+                product_quantity: $("#select" + productID + " option:selected").text(),
                 csrfmiddlewaretoken: "{{ csrf_token }}",
                 action: "post",
             },
             success: function (e) {
                 location.reload();
             },
+        });
     });
 </script>
 {% endblock %}
