@@ -8,7 +8,7 @@ def add_to_cart(request):
     cart = Cart(request)
     if request.method == 'POST':
         product_id = request.POST.get('product_id')
-        product_quantity = request.POST.get('product_quantity')
+        product_quantity = int(request.POST.get('product_quantity'))
         print(f"product_id: {product_id}, product_quantity: {product_quantity}")
         product = get_object_or_404(Product, id=product_id)
         cart.add(product, product_quantity)
@@ -34,6 +34,6 @@ def cart_update(request):
     cart = Cart(request)
     if request.method == 'POST':
         product_id = request.POST.get('product_id')
-        product_quantity = request.POST.get('product_quantity')
+        product_quantity = int(request.POST.get('product_quantity'))
         cart.update(product_id=product_id, product_quantity=product_quantity)
         return JsonResponse({'qty':cart.__len__()})

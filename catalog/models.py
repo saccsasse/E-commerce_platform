@@ -4,16 +4,18 @@ from django.utils.text import slugify
 from django.urls import reverse
 
 class Product(models.Model):
+    def __str__(self):
+        return self.name
 
     def get_absolute_url(self):
         return reverse('detail', args=[self.slug])
 
     name = models.CharField(max_length=100)
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField()
     image = models.ImageField(upload_to='images/')
     slug = models.SlugField(unique=True, blank=True)
-    stock = models.IntegerField()
+    stock = models.PositiveIntegerField(default=0)
     active = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
