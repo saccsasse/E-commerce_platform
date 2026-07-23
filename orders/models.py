@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -30,4 +31,4 @@ class OrderItem(models.Model):
 
     @property
     def total_price(self):
-        return self.quantity * self.product.price
+        return self.quantity * Decimal(self.product.price)

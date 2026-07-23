@@ -34,7 +34,7 @@ class Cart():
         if product_id in self.cart:
             self.cart[product_id]['quantity'] += product_quantity
         else:
-            self.cart[product_id] = {'price': product.price, 'quantity': product_quantity}
+            self.cart[product_id] = {'price': str(product.price), 'quantity': product_quantity}
         self.session.modified = True
 
     def delete(self,product_id):
@@ -43,9 +43,9 @@ class Cart():
             del self.cart[product_id]
         self.session.modified = True
 
-    def update(self, product_id, qty):
+    def update(self, product_id, product_quantity):
         product_id = str(product_id)
-        product_quantity = str(qty)
+        product_quantity = str(product_quantity)
         if product_id in self.cart:
-            self.cart[product_id]['qty'] = product_quantity
+            self.cart[product_id]['quantity'] = product_quantity
         self.session.modified = True
