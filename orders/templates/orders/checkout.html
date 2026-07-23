@@ -1,0 +1,57 @@
+{% extends 'myapp/base.html' %}
+<!--Comment-->
+{% block body %}
+
+<h1>checkout page</h1>
+<form action="">
+    <h1>Complete your order</h1>
+    <label for="">Full Name</label>
+    <input type="text" value="{{ address.full_name }}" name="" id=""/>
+    <div>
+        <label for="">Address 1</label>
+        <input type="text" value="{{ address.line_1 }}" name="" id=""/>
+    </div>
+    <div>
+        <label for="">Address 2</label>
+        <input type="text" value="{{ address.line_2 }}" name="" id=""/>
+    </div>
+    <div>
+        <label for="">City</label>
+        <input type="text" value="{{ address.city }}" name="" id=""/>
+    </div>
+    <div>
+        <label for="">State</label>
+        <input type="text" value="{{ address.state }}" name="" id=""/>
+    </div>
+    <div>
+        <label for="">Postal Code</label>
+        <input type="text" value="{{ address.postal_code }}" name="" id=""/>
+    </div>
+    <div>
+        <label for="">Country</label>
+        <input type="text" value="{{ address.country }}" name="" id=""/>
+    </div>
+    <div>
+        <button type="submit">Complete Order</button>
+    </div>
+</form>
+<script>
+    $(document).on("submit", function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "{% url 'place-order' %}",
+            data: {
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+                action: "post",
+            },
+            success: function(json) {
+                window.location.replace("{% url 'order-success' %}");
+            },
+            error: function() {
+                window.location.replace("{% url 'order-failed' %}");
+            },
+        });
+    });
+</script>
+{% endblock %}
