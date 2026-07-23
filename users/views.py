@@ -7,7 +7,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth import authenticate, login, logout
 
 from .forms import CreateUserForm, LoginForm, UserUpdateForm
-from .token import account_activation_token
+from .tokens import account_activation_token
 
 
 def register(request):
