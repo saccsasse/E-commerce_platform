@@ -6,7 +6,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth import authenticate, login, logout
 
-from .forms import CreateUserForm, LoginForm
+from .forms import CreateUserForm, LoginForm, UserUpdateForm
 from .token import account_activation_token
 
 
@@ -65,6 +65,18 @@ def user_login(request):
                 return redirect('index')
     return render(request, 'users/login.html', {'form': form})
 
+
 def user_logout(request):
     logout(request)
     return redirect('index')
+
+
+def profile(request):
+    user_form = UserUpdateForm(instance=request.user)
+    if request.method == 'POST':
+        user_form = UserUpdateForm(request.POST, instance=request.user)
+        if user_form.is_valid():
+            user_form.save()
+            return redirect('index')
+    user_form = UserUpdateForm(instance=request.user)
+    return render(request, 'users/profile.html', {'user_form': user_form})
